@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "An AI-powered expense tracker that automates expense tracking and insights.",
+  "keywords": [
+    "node.js",
+    "express.js",
+    "mongoDB",
+    "redis"
+  ],
+  "homepage": "https://github.com/Asmaul360/AI-Powered-Expanse-Tracker#readme",
+  "bugs": {
+    "url": "https://github.com/Asmaul360/AI-Powered-Expanse-Tracker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Asmaul360/AI-Powered-Expanse-Tracker.git"
+  },
+  "license": "ISC",
+  "author": "ASMAUL",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
