@@ -85,3 +85,10 @@ const getAllExpenses = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, expenses, "All expenses fetched successfully"));
 });
+export {
+  createExpense,
+  getExpense,
+  updateExpense,
+  deleteExpense,
+  getAllExpenses,
+};
