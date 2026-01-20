@@ -3,15 +3,23 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { Expense } from "../models/expense.model.js";
 const createExpense = asyncHandler(async (req, res) => {
-  const { amount, title, note, paymentMethod, date, isRecurring } = req.body;
-  if (!title?.trim() || amount == null || !paymentMethod) {
-    throw new ApiError(400, "Title, amount and payment method are required");
+  const { amount, title, note, paymentMethod, date, isRecurring, category } =
+    req.body;
+
+  if (!title?.trim() || amount == null || !paymentMethod || !category) {
+    throw new ApiError(
+      400,
+      "Title, amount, payment method and category are required"
+    );
   }
+
   if (amount < 0) {
     throw new ApiError(400, "Amount cannot be negative");
   }
+
   const expense = await Expense.create({
     user: req.user?._id,
+    category, // 👈 **ISS LINE KA ABHI TUMHARE CODE ME HI NAHI THA**
     amount,
     title,
     note,
@@ -19,10 +27,12 @@ const createExpense = asyncHandler(async (req, res) => {
     date,
     isRecurring,
   });
+
   return res
     .status(201)
     .json(new ApiResponse(201, expense, "Expense created successfully"));
 });
+
 const getExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
   const expense = await Expense.findOne({
