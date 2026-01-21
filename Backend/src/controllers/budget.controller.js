@@ -2,7 +2,8 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import { Budget } from "../models/budget.model.js";
+import Budget from "../models/budget.model.js";
+
 import { Expense } from "../models/expense.model.js";
 const createBudget = asyncHandler(async (req, res) => {
   const {
@@ -113,7 +114,7 @@ const deleteBudget = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Budget deleted successfully"));
 });
-export const getBudgetSummary = asyncHandler(async (req, res) => {
+const getBudgetSummary = asyncHandler(async (req, res) => {
   const { budgetId } = req.params;
 
   // 1. Fetch budget (only user's own)
@@ -163,3 +164,10 @@ export const getBudgetSummary = asyncHandler(async (req, res) => {
     )
   );
 });
+export {
+  createBudget,
+  getBudget,
+  updateBudget,
+  deleteBudget,
+  getBudgetSummary,
+};

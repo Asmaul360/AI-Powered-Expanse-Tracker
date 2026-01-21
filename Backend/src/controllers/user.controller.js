@@ -39,30 +39,39 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
+
   if (!username && !email) {
     throw new ApiError(400, "Username or Email is required !!");
   }
+
   const user = await User.findOne({ $or: [{ email }, { username }] });
   if (!user) {
     throw new ApiError(404, "User does not exist");
   }
+
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
   }
+
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
+
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
+
   if (!loggedInUser) {
     throw new ApiError(500, "Something went wrong while fetching user data");
   }
+
+  // 🔥 FIX: define options here
   const options = {
     httpOnly: true,
-    secure: false,
+    secure: false, // set true in production with HTTPS
     sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 
   return res
@@ -81,6 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
       )
     );
 });
+
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,

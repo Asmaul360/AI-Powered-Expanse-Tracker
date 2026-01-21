@@ -2,20 +2,24 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-// Routes
 import userRoutes from "./routes/user.routes.js";
 import expenseRoutes from "./routes/expense.routes.js";
-import category from "./routes/category.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+
+import budgetRouter from "./routes/budget.routes.js"; // Adjust path as needed
+
 const app = express();
 
-// Middlewares
+// MIDDLEWARES
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Route declarations
+// ROUTES
+app.use("/api/v1/budget", budgetRouter);
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/expense", expenseRoutes); // All expense APIs
-app.use("/api/v1/category", category);
+app.use("/api/v1/expense", expenseRoutes);
+app.use("/api/v1/category", categoryRoutes);
+
 export default app;
